@@ -7,6 +7,8 @@ const checkPalindrome = (word) => {
   return false;
 };
 
+checkPalindrome('ДовОд');
+
 //Извлекает цифры из строки и приводит к положительному числу
 const stringToNumber = (string) => {
   let number = '';
@@ -17,6 +19,8 @@ const stringToNumber = (string) => {
   }
   return parseInt(number, 10);
 };
+
+stringToNumber('ECMAScript 2022');
 
 //Добавляет символы в начало строки
 const modifyString = (originalString, minLength, additionalString) => {
@@ -29,6 +33,8 @@ const modifyString = (originalString, minLength, additionalString) => {
   return modifiedString;
 };
 
+modifyString('q', 4, 'we');
+
 // Проверяет длину строки
 const checkLength = (string, maxLength) => {
   if (string.length <= maxLength) {
@@ -37,4 +43,4 @@ const checkLength = (string, maxLength) => {
   return false;
 };
 
-
+checkLength('проверяемая строка', 18);
