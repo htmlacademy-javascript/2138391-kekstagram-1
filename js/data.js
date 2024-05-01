@@ -45,5 +45,7 @@ const createImageData = () => ({
   comments: Array.from({length: getRandomInteger(1, 3)}, createComment)
 });
 
-const similarImageData = Array.from({length: SIMILAR_IMAGE_DATA_COUNT}, createImageData);
-similarImageData.reverse(); //Написал только для того, чтобы линтер не ругался что переменная никогда не использовалась
+const createImagesData = () => Array.from({length: SIMILAR_IMAGE_DATA_COUNT}, createImageData);
+
+export {createImagesData};
+
