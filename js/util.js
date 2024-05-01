@@ -29,4 +29,4 @@ function getRandomArrayElement (array) {
   return array[getRandomInteger(0, array.length - 1)];
 }
 
-export {generatePhotoId, generateUrl, generateCommentId, getRandomArrayElement};
+export {generatePhotoId, generateUrl, generateCommentId, getRandomInteger, getRandomArrayElement};

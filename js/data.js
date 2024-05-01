@@ -1,4 +1,4 @@
-import {generatePhotoId, generateUrl, generateCommentId, getRandomArrayElement} from './util.js';
+import {generatePhotoId, generateUrl, generateCommentId, getRandomInteger, getRandomArrayElement} from './util.js';
 
 //Массив значений для ключа description объекта "Данные изображения"
 const DESCRIPTION = [
