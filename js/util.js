@@ -28,3 +28,5 @@ function getRandomInteger (min, max) {
 function getRandomArrayElement (array) {
   return array[getRandomInteger(0, array.length - 1)];
 }
+
+export {generatePhotoId, generateUrl, generateCommentId, getRandomArrayElement};
