@@ -1,3 +1,5 @@
+import {generatePhotoId, generateUrl, generateCommentId, getRandomArrayElement} from './util.js';
+
 //Массив значений для ключа description объекта "Данные изображения"
 const DESCRIPTION = [
   'Я художник я так вижу',
