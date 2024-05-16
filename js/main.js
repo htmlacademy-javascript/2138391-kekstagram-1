@@ -1,3 +1,2 @@
-import {createImagesData} from './data.js';
-
-console.log(createImagesData());
+import './data.js';
+import './midget.js';
