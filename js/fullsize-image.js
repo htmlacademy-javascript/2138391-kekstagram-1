@@ -12,6 +12,8 @@ previewImageParent.addEventListener('click', (evt) => {
     fullsizeModal.classList.remove('hidden');
     const fullsizeImage = document.querySelector('.big-picture__img');
     fullsizeImage.querySelector('img').src = evt.target.src;
+    const pictureLink = evt.target.closest('.picture');
+    fullsizeModal.querySelector('.likes-count').textContent = pictureLink.querySelector('.picture__likes').textContent;
   }
 });
 
