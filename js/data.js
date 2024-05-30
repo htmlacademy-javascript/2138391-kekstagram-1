@@ -32,7 +32,7 @@ const SIMILAR_IMAGE_DATA_COUNT = 25;
 
 const createComment = () => ({
   id: generateCommentId(),
-  avatar: `img/avatar-${getRandomInteger(1, 6)}.sv`,
+  avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
   message: getRandomArrayElement(MESSAGES),
   name: getRandomArrayElement(NAMES)
 });
@@ -42,10 +42,10 @@ const createImageData = () => ({
   url: `photos/${generateUrl()}.jpg`,
   description: getRandomArrayElement(DESCRIPTION),
   likes: getRandomInteger(15, 200),
-  comments: Array.from({length: getRandomInteger(1, 3)}, createComment)
+  comments: Array.from({length: 2}, createComment)
 });
 
 const createImagesData = () => Array.from({length: SIMILAR_IMAGE_DATA_COUNT}, createImageData);
 
-export {createImagesData};
+export {createImagesData, createImageData};
 
