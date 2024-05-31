@@ -25,10 +25,14 @@ previewImageParent.addEventListener('click', (evt) => {
       commentsList.append(commentItem);
     });
     fullsizeModal.querySelector('.social__caption').textContent = commentData.description;
+    fullsizeModal.querySelector('.social__comment-count').classList.add('hidden');
+    fullsizeModal.querySelector('.comments-loader').classList.add('hidden');
+    document.querySelector('body').classList.add('modal-open');
   }
 });
 
 fullsizeModalCloseBtn.addEventListener('click', () => {
   fullsizeModal.classList.add('hidden');
   commentsList.innerHTML = '';
+  document.querySelector('body').classList.remove('modal-open');
 })

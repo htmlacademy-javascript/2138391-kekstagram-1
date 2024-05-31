@@ -29,4 +29,8 @@ function getRandomArrayElement (array) {
   return array[getRandomInteger(0, array.length - 1)];
 }
 
-export {generatePhotoId, generateUrl, generateCommentId, getRandomInteger, getRandomArrayElement};
+//Функция контроля нажатия клавищи Esc
+
+const isEscapeKey = (evt) => evt.target === 'Escape';
+
+export {generatePhotoId, generateUrl, generateCommentId, getRandomInteger, getRandomArrayElement, isEscapeKey};
