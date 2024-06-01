@@ -1,5 +1,5 @@
 import {createImagesData} from './data.js';
-import {openFullsizeImgModal, closeFullsizeImgModal} from './fullsize-image.js';
+import {openFullsizeImgModal, closeFullsizeImgModal} from './fullsize-img-modal.js';
 
 //Контейнер для миниатюр
 const midgetsContainer = document.querySelector('.pictures');
