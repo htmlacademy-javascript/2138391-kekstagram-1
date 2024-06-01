@@ -36,4 +36,4 @@ midgetsContainer.addEventListener('click', (evt) => {
 // Закрывает полноэкранное изображение
 fullsizeImgModalCloseBtn.addEventListener('click', (evt) => {
   closeFullsizeImgModal(evt);
-})
+});

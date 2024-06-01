@@ -29,7 +29,7 @@ function getRandomArrayElement (array) {
   return array[getRandomInteger(0, array.length - 1)];
 }
 
-//Функция контроля нажатия клавищи Esc
+//Функция контроля нажатия клавиши Esc
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
