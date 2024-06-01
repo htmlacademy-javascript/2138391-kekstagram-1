@@ -1,4 +1,5 @@
 import {createImagesData} from './data.js';
+import {openFullsizeImgModal, closeFullsizeImgModal} from './fullsize-img-modal.js';
 
 //Контейнер для миниатюр
 const midgetsContainer = document.querySelector('.pictures');
@@ -12,6 +13,9 @@ const usersImagesData = createImagesData();
 //Фрагмент для хранения создаваемых элементов
 const midgetsFragment = document.createDocumentFragment();
 
+//Элемент для закрытия полноэкранного режима и возврата к миниатюрам
+const fullsizeImgModalCloseBtn = document.querySelector('.big-picture__cancel');
+
 //Перебираем данные циклом и заполняем ими шаблон
 
 usersImagesData.forEach((userImageData) => {
@@ -23,3 +27,13 @@ usersImagesData.forEach((userImageData) => {
 });
 
 midgetsContainer.append(midgetsFragment);
+
+// Добавляет обработчик событий на миниатюры через родительский элемент при всплытии, открывает полноэкранное изображение
+midgetsContainer.addEventListener('click', (evt) => {
+  openFullsizeImgModal(evt);
+});
+
+// Закрывает полноэкранное изображение
+fullsizeImgModalCloseBtn.addEventListener('click', (evt) => {
+  closeFullsizeImgModal(evt);
+});
