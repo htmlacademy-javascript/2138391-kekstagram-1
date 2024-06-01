@@ -1,14 +1,24 @@
-import {createImagesData, createImageData} from './data.js';
-import './midget.js';
+import {createImageData} from './data.js';
+import {isEscapeKey} from './util.js';
 
+//Модальное окно полноэкранного изображения
 const fullsizeModal = document.querySelector('.big-picture');
-const previewImageParent = document.querySelector('.pictures');
-const fullsizeModalCloseBtn = document.querySelector('.big-picture__cancel');
+
+// Список комментариев к изображению
 const commentsList = fullsizeModal.querySelector('.social__comments');
+
+//Шаблон для комментария
 const commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
 
+//Callback функция для document при наступлении события 'keydown', нажатии клавиши Esc
+const onDocumentKeydownEsc = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closeFullsizeImgModal();
+  }
+}
 
-previewImageParent.addEventListener('click', (evt) => {
+function openFullsizeImgModal (evt) {
   if (evt.target.matches('.picture__img')) {
     fullsizeModal.classList.remove('hidden');
     const fullsizeImage = document.querySelector('.big-picture__img');
@@ -28,11 +38,19 @@ previewImageParent.addEventListener('click', (evt) => {
     fullsizeModal.querySelector('.social__comment-count').classList.add('hidden');
     fullsizeModal.querySelector('.comments-loader').classList.add('hidden');
     document.querySelector('body').classList.add('modal-open');
+    document.addEventListener('keydown', onDocumentKeydownEsc);
   }
-});
+}
 
-fullsizeModalCloseBtn.addEventListener('click', () => {
+
+
+function closeFullsizeImgModal () {
   fullsizeModal.classList.add('hidden');
   commentsList.innerHTML = '';
   document.querySelector('body').classList.remove('modal-open');
-})
+  document.removeEventListener('keydown', onDocumentKeydownEsc);
+}
+
+
+
+export{openFullsizeImgModal, closeFullsizeImgModal};
