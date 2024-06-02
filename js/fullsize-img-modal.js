@@ -44,8 +44,6 @@ function openFullsizeImgModal (evt) {
     createComment(imageData);
     commentsList.append(commentsFragment);
     fullsizeImgModal.querySelector('.social__caption').textContent = imageData.description;
-    fullsizeImgModal.querySelector('.social__comment-count').classList.add('hidden');
-    fullsizeImgModal.querySelector('.comments-loader').classList.add('hidden');
     document.querySelector('body').classList.add('modal-open');
     document.addEventListener('keydown', onDocumentKeydownEsc);
   }
