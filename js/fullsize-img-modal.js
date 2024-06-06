@@ -83,6 +83,7 @@ function openFullsizeImgModal (evt) {
       commentsList.append(commentsFragment);
       //Удаляет обработчик событий с кнопки "Загрузить еще" когда все комменты загружены
       if (imageData.comments.length === 0) {
+        loadCommentsBtn.classList.add('hidden');
         loadCommentsBtn.removeEventListener('click', onLoadCommentsBtnClick);
       }
     };
