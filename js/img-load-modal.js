@@ -138,6 +138,8 @@ pristine.addValidator(
   'Комментарий не больше 140 символов'
 );
 
-imgLoadModal.addEventListener('submit', () => {
-  pristine.validate();
+imgLoadModal.addEventListener('submit', (evt) => {
+  if (pristine.validate() !== true) {
+    evt.preventDefault();
+  }
 });
