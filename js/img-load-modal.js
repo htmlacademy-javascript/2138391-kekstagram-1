@@ -1,66 +1,105 @@
+import {sendData} from './api.js';
 import {isEscapeKey} from './util.js';
 
 const imgLoadModal = document.querySelector('.img-upload__form');
-
 const imgLoad = imgLoadModal.querySelector('#upload-file');
-
 const imgEditor = imgLoadModal.querySelector('.img-upload__overlay');
-
 const imgLoadModalCloseBtn = imgLoadModal.querySelector('#upload-cancel');
-
+const publishBtn = imgLoadModal.querySelector('#upload-submit');
 const hashtagsField = imgLoadModal.querySelector('.text__hashtags');
-
 const commentField = imgLoadModal.querySelector('.text__description');
-
 const scaleMinusBtn = imgLoadModal.querySelector('.scale__control--smaller');
-
 const scalePlusBtn = imgLoadModal.querySelector('.scale__control--bigger');
-
 const scaleValueField = imgLoadModal.querySelector('.scale__control--value');
-
 const imgUploadPreview = imgLoadModal.querySelector('.img-upload__preview');
-
 const imgEffectLevelContainer = imgLoadModal.querySelector('.img-upload__effect-level');
-
 const imgEffectsContainer = imgLoadModal.querySelector('.effects__list');
-
 const imgBasicClass = imgUploadPreview.className;
-
 const effectNofilter = imgLoadModal.querySelector('#effect-none');
-
 const imgEffectSlider = imgLoadModal.querySelector('.effect-level__slider');
-
 const effectInput = imgLoadModal.querySelector('.effect-level__value');
-
-
-// Регулярное выражение для проверки состава хэштега
-
+const successMessage = document.querySelector('#success').content.querySelector('.success');
+const successMessageBtn = successMessage.querySelector('.success__button');
+const errorMessage = document.querySelector('#error').content.querySelector('.error');
+const errorMessageBtn = errorMessage.querySelector('.error__button');
 const hashtagRegExp = /^#[a-zа-яё0-9]{1,19}$/i;
-
-//Callback функция для document при наступлении события 'keydown', нажатии клавиши Esc
 const onDocumentKeydownEsc = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeImgLoadModal();
   }
 };
+const outsideClickModal = (evt, state) => {
+  if (state === 'success') {
+    if (!successMessage.querySelector('.success__inner').contains(evt.target)) {
+      removeSuccessModal();
+    }
+  } else if (!errorMessage.querySelector('.error__inner').contains(evt.target)) {
+    removeErrorModal();
+  }
+};
 
-//Callback функция для поля загрузки изображения при наступлении события 'change'
-function openImgLoadModal () {
+const listenerClickSuccessBtn = function () {
+  removeSuccessModal();
+};
+
+const listenerClickOutsideSuccess = function (evt) {
+  outsideClickModal(evt, 'success');
+};
+
+const listenerEscSuccess = function (evt) {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    removeSuccessModal();
+  }
+};
+
+const listenerClickErrorBtn = function () {
+  removeErrorModal();
+};
+
+const listenerClickOutsideError = function (evt) {
+  outsideClickModal(evt);
+};
+
+const listenerEscError = function (evt) {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    removeErrorModal();
+  }
+};
+
+function removeSuccessModal () {
+  successMessage.remove();
+  successMessageBtn.removeEventListener('click', listenerClickSuccessBtn);
+  successMessage.removeEventListener('click', listenerClickOutsideSuccess);
+  document.removeEventListener('keydown', listenerEscSuccess);
+}
+
+function removeErrorModal () {
+  errorMessage.remove();
+  errorMessageBtn.removeEventListener('click', listenerClickErrorBtn);
+  errorMessage.removeEventListener('click', listenerClickOutsideError);
+  document.removeEventListener('keydown', listenerEscError);
+  document.addEventListener('keydown', onDocumentKeydownEsc);
+}
+
+function openImgLoadModal() {
   imgEditor.classList.remove('hidden');
   document.querySelector('body').classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydownEsc);
+  document.addEventListener('click', outsideClickModal);
   scaleValueField.value = '100%';
   imgUploadPreview.style.transform = 'scale(1)';
   effectNofilter.checked = true;
   imgEffectLevelContainer.classList.add('visually-hidden');
 }
 
-//Callback функция для кнопки закрытия модального окна загрузки изображения при наступлении события 'click'
-function closeImgLoadModal () {
+function closeImgLoadModal() {
   imgEditor.classList.add('hidden');
   document.querySelector('body').classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydownEsc);
+  document.removeEventListener('click', outsideClickModal);
   scaleValueField.readOnly = false;
   scaleValueField.value = '100%';
   imgLoad.value = '';
@@ -78,8 +117,6 @@ imgLoadModalCloseBtn.addEventListener('click', () => {
   closeImgLoadModal();
 });
 
-//Используя механизм всплытия не дает возможность отработать событию keydown на родительском элементе document
-
 hashtagsField.addEventListener('keydown', (evt) => {
   evt.stopPropagation();
 });
@@ -87,7 +124,6 @@ hashtagsField.addEventListener('keydown', (evt) => {
 commentField.addEventListener('keydown', (evt) => {
   evt.stopPropagation();
 });
-
 const pristine = new Pristine (imgLoadModal, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
@@ -167,9 +203,31 @@ pristine.addValidator(
   'Комментарий не больше 140 символов'
 );
 
+const postDataCallBack = async (formData) => {
+  publishBtn.disabled = true;
+  try {
+    await sendData(formData);
+    document.querySelector('body').append(successMessage);
+    successMessageBtn.addEventListener('click', listenerClickSuccessBtn);
+    successMessage.addEventListener('click', listenerClickOutsideSuccess);
+    document.addEventListener('keydown', listenerEscSuccess);
+    closeImgLoadModal();
+  } catch {
+    document.querySelector('body').append(errorMessage);
+    document.removeEventListener('keydown', onDocumentKeydownEsc);
+    errorMessageBtn.addEventListener('click', listenerClickErrorBtn);
+    errorMessage.addEventListener('click', listenerClickOutsideError);
+    document.addEventListener('keydown', listenerEscError);
+  } finally {
+    publishBtn.disabled = false;
+  }
+};
+
 imgLoadModal.addEventListener('submit', (evt) => {
-  if (pristine.validate() !== true) {
-    evt.preventDefault();
+  evt.preventDefault();
+  if (pristine.validate()) {
+    const formData = new FormData(evt.target);
+    postDataCallBack(formData);
   }
 });
 
@@ -322,3 +380,5 @@ noUiSlider.create(imgEffectSlider, {
 imgEffectSlider.noUiSlider.on('update', () => {
   effectInput.value = imgEffectSlider.noUiSlider.get();
 });
+
+export {removeSuccessModal, closeImgLoadModal};
