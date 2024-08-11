@@ -80,7 +80,7 @@ function openFullsizeImgModal(userImageData) {
   fullsizeImgModal.querySelector('.social__caption').textContent = userImageData.description;
   document.querySelector('body').classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydownEsc);
-  setTimeout(() => document.addEventListener('click', outsideClickModal), 0)
+  setTimeout(() => document.addEventListener('click', outsideClickModal), 0);
   fullsizeImgModalCloseBtn.addEventListener('click', closeFullsizeImgModal);
 }
 
@@ -90,11 +90,11 @@ function closeFullsizeImgModal() {
   document.querySelector('body').classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydownEsc);
   document.removeEventListener('click', outsideClickModal);
-  loadCommentsBtn.classList.remove('hidden')
+  loadCommentsBtn.classList.remove('hidden');
 }
 
 function outsideClickModal(evt) {
-  evt.preventDefault()
+  evt.preventDefault();
   if (!modalContent.contains(evt.target)) {
     closeFullsizeImgModal();
   }
