@@ -9,6 +9,8 @@ const midgetTemplate = document.querySelector('#picture').content.querySelector(
 //Перебираем данные циклом и заполняем ими шаблон
 
 const renderMidgets = (usersImagesData) => {
+  const existingMidgets = midgetsContainer.querySelectorAll('.picture');
+  existingMidgets.forEach((midget) => midget.remove());
   const midgetsFragment = document.createDocumentFragment();
   usersImagesData.forEach((userImageData) => {
     const midget = midgetTemplate.cloneNode(true);
