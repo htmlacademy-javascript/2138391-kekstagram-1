@@ -28,7 +28,7 @@ const filteredMidgets = () => {
   }
 };
 
-const debounceRenderMidgets = debounce(renderMidgets, 1000);
+const debounceRenderMidgets = debounce(renderMidgets);
 
 const removeInactiveClass = (response) => {
   filterSection.classList.remove('img-filters--inactive');
