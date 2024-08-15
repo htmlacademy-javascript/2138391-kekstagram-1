@@ -3,6 +3,7 @@ import {isEscapeKey} from './util.js';
 
 const imgLoadModal = document.querySelector('.img-upload__form');
 const imgLoad = imgLoadModal.querySelector('#upload-file');
+const loadedImg = imgLoadModal.querySelector('img');
 const imgEditor = imgLoadModal.querySelector('.img-upload__overlay');
 const imgLoadModalCloseBtn = imgLoadModal.querySelector('#upload-cancel');
 const publishBtn = imgLoadModal.querySelector('#upload-submit');
@@ -23,6 +24,7 @@ const successMessageBtn = successMessage.querySelector('.success__button');
 const errorMessage = document.querySelector('#error').content.querySelector('.error');
 const errorMessageBtn = errorMessage.querySelector('.error__button');
 const hashtagRegExp = /^#[a-zа-яё0-9]{1,19}$/i;
+const EXTENSIONS = ['jpeg', 'jpg', 'png'];
 const onDocumentKeydownEsc = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
@@ -69,6 +71,11 @@ const listenerEscError = function (evt) {
   }
 };
 
+const isValidType = (file) => {
+  const fileName = file.name.toLowerCase();
+  return EXTENSIONS.some((extension) => fileName.endsWith(extension));
+};
+
 function removeSuccessModal () {
   successMessage.remove();
   successMessageBtn.removeEventListener('click', listenerClickSuccessBtn);
@@ -110,7 +117,12 @@ function closeImgLoadModal() {
 }
 
 imgLoad.addEventListener('change', () => {
-  openImgLoadModal();
+  const file = imgLoad.files[0];
+  if (file && isValidType(file)) {
+    const url = URL.createObjectURL(file);
+    loadedImg.src = url;
+    openImgLoadModal();
+  }
 });
 
 imgLoadModalCloseBtn.addEventListener('click', () => {
