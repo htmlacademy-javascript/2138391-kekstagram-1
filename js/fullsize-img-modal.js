@@ -20,6 +20,8 @@ const loadCommentsBtn = fullsizeImgModal.querySelector('.social__comments-loader
 
 const fullsizeImgModalCloseBtn = document.querySelector('.big-picture__cancel');
 
+const COMMENTS_AMOUNT = 5;
+
 let comments = [];
 
 const onDocumentKeydownEsc = (evt) => {
@@ -51,8 +53,8 @@ function openFullsizeImgModal(userImageData) {
   comments = [...userImageData.comments];
 
   const onLoadCommentsBtnClick = () => {
-    if (comments.length > 5) {
-      for (let i = 0; i < 5; i++) {
+    if (comments.length > COMMENTS_AMOUNT) {
+      for (let i = 0; i < COMMENTS_AMOUNT; i++) {
         const commentItem = commentTemplate.cloneNode(true);
         commentItem.querySelector('img').src = comments[i].avatar;
         commentItem.querySelector('img').alt = comments[i].name;
@@ -60,7 +62,7 @@ function openFullsizeImgModal(userImageData) {
         loadedCommentsQty.textContent++;
         commentsFragment.append(commentItem);
       }
-      comments.splice(0, 5);
+      comments.splice(0, COMMENTS_AMOUNT);
     } else {
       createComment(comments);
       loadedCommentsQty.textContent = Number(loadedCommentsQty.textContent) + comments.length;
