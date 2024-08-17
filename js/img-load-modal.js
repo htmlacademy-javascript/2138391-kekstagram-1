@@ -12,6 +12,7 @@ const commentField = imgLoadModal.querySelector('.text__description');
 const scaleMinusBtn = imgLoadModal.querySelector('.scale__control--smaller');
 const scalePlusBtn = imgLoadModal.querySelector('.scale__control--bigger');
 const scaleValueField = imgLoadModal.querySelector('.scale__control--value');
+const SCALE_STEP = 25;
 const imgUploadPreview = imgLoadModal.querySelector('.img-upload__preview');
 const imgEffectLevelContainer = imgLoadModal.querySelector('.img-upload__effect-level');
 const imgEffectsContainer = imgLoadModal.querySelector('.effects__list');
@@ -107,6 +108,10 @@ function closeImgLoadModal() {
   document.querySelector('body').classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydownEsc);
   document.removeEventListener('click', outsideClickModal);
+  const errorFields = document.querySelectorAll('.pristine-error');
+  errorFields.forEach((errorField) => {
+    errorField.style.display = 'none';
+  });
   scaleValueField.readOnly = false;
   scaleValueField.value = '100%';
   imgLoad.value = '';
@@ -162,8 +167,8 @@ function validateHashtags (value) {
 
 //Функция проверки для Pristine уникальности хэштега
 function validateHashtagsUnique (value) {
-  const trimmedValue = value.trim();
-  const hashtagsArr = trimmedValue.split(' ');
+  const editedValue = value.toLowerCase().trim();
+  const hashtagsArr = editedValue.split(' ');
   let result = '';
   for (let i = 0; i < hashtagsArr.length - 1; i++) {
     for (let j = i + 1; j < hashtagsArr.length; j++) {
@@ -247,7 +252,7 @@ imgLoadModal.addEventListener('submit', (evt) => {
 function scaleDown () {
   let scaleValueTransformed = parseFloat(scaleValueField.value);
   if (scaleValueTransformed > 25) {
-    scaleValueTransformed = scaleValueTransformed - 25;
+    scaleValueTransformed = scaleValueTransformed - SCALE_STEP;
     scaleValueField.value = `${scaleValueTransformed}%`;
     imgUploadPreview.style.transform = `scale(${scaleValueField.value})`;
   }
@@ -257,7 +262,7 @@ function scaleDown () {
 function scaleUp () {
   let scaleValueTransformed = parseFloat(scaleValueField.value);
   if (scaleValueTransformed < 100) {
-    scaleValueTransformed = scaleValueTransformed + 25;
+    scaleValueTransformed = scaleValueTransformed + SCALE_STEP;
     scaleValueField.value = `${scaleValueTransformed}%`;
     imgUploadPreview.style.transform = `scale(${scaleValueField.value})`;
   }
